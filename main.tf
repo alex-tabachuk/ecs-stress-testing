@@ -4,7 +4,7 @@ module "eu1" {
     region = "eu-central-1"
     secret_key = var.secret_key
     access_key = var.access_key
-    how_many = var.count
+    how_many = var.how_many
     target = var.target
 }
 
@@ -14,7 +14,7 @@ module "eu2" {
     region = "eu-west-1"
     secret_key = var.secret_key
     access_key = var.access_key
-    how_many = var.count
+    how_many = var.how_many
     target = var.target
 }
 
@@ -24,7 +24,7 @@ module "eu3" {
     region = "eu-west-2"
     secret_key = var.secret_key
     access_key = var.access_key
-    how_many = var.count
+    how_many = var.how_many
     target = var.target
 }
 
@@ -34,7 +34,7 @@ module "us1" {
     region = "us-east-1"
     secret_key = var.secret_key
     access_key = var.access_key
-    how_many = var.count
+    how_many = var.how_many
     target = var.target
 }
 
@@ -44,7 +44,7 @@ module "us2" {
     region = "us-west-1"
     secret_key = var.secret_key
     access_key = var.access_key
-    how_many = var.count
+    how_many = var.how_many
     target = var.target
 }
 
@@ -54,7 +54,7 @@ module "ca1" {
     region = "ca-central-1"
     secret_key = var.secret_key
     access_key = var.access_key
-    how_many = var.count
+    how_many = var.how_many
     target = var.target
 }
 
@@ -64,7 +64,7 @@ module "ap1" {
     region = "ap-southeast-1"
     secret_key = var.secret_key
     access_key = var.access_key
-    how_many = var.count
+    how_many = var.how_many
     target = var.target
 }
 
@@ -74,7 +74,7 @@ module "sa1" {
     region = "sa-east-1"
     secret_key = var.secret_key
     access_key = var.access_key
-    how_many = var.count
+    how_many = var.how_many
     target = var.target
 }
 
@@ -84,7 +84,7 @@ module "ap2" {
     region = "ap-southeast-2"
     secret_key = var.secret_key
     access_key = var.access_key
-    how_many = var.count
+    how_many = var.how_many
     target = var.target
 }
 
@@ -94,6 +94,6 @@ module "ap3" {
     region = "ap-northeast-1"
     secret_key = var.secret_key
     access_key = var.access_key
-    how_many = var.count
+    how_many = var.how_many
     target = var.target
 }
