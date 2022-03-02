@@ -38,10 +38,30 @@ module "us1" {
     target = var.target
 }
 
+module "us1a" {
+    source = "./ecs"
+
+    region = "us-east-2"
+    secret_key = var.secret_key
+    access_key = var.access_key
+    how_many = var.how_many
+    target = var.target
+}
+
 module "us2" {
     source = "./ecs"
 
     region = "us-west-1"
+    secret_key = var.secret_key
+    access_key = var.access_key
+    how_many = var.how_many
+    target = var.target
+}
+
+module "us2a" {
+    source = "./ecs"
+
+    region = "us-west-2"
     secret_key = var.secret_key
     access_key = var.access_key
     how_many = var.how_many

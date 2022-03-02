@@ -6,13 +6,17 @@ resource "aws_kms_key" "ecs" {
   deletion_window_in_days = 10
 }
 
-resource "random_pet" "cluster" {}
-resource "random_pet" "service" {}
+resource "random_pet" "cluster" {
+  count = length(toset(var.target))
+}
+resource "random_pet" "service" {
+  count = length(toset(var.target))
+}
 
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = random_pet.cluster.id
+  name = random_pet.cluster[0].id
   cidr = "10.0.0.0/16"
 
   azs             = data.aws_availability_zones.available.names
@@ -26,7 +30,9 @@ module "vpc" {
 module "ecs" {
   source = "terraform-aws-modules/ecs/aws"
 
-  name = random_pet.cluster.id
+  count = length(toset(var.target))
+
+  name = random_pet.cluster[count.index].id
   container_insights = false
   capacity_providers = ["FARGATE"]
   default_capacity_provider_strategy = [
@@ -37,9 +43,11 @@ module "ecs" {
 }
 
 resource "aws_ecs_service" "main" {
-  name            = random_pet.service.id
-  cluster         = module.ecs.ecs_cluster_id
-  task_definition = aws_ecs_task_definition.service.arn
+  count = length(toset(var.target))
+
+  name            = random_pet.service[count.index].id
+  cluster         = module.ecs[count.index].ecs_cluster_id
+  task_definition = aws_ecs_task_definition.service[count.index].arn
   desired_count   = var.how_many
 
   capacity_provider_strategy {
@@ -54,18 +62,22 @@ resource "aws_ecs_service" "main" {
 }
 
 resource "aws_ecs_task_definition" "service" {
-  family                = "service"
+  count = length(toset(var.target))
+
+  family                = md5(module.container_definition[count.index].json_map_encoded)
   requires_compatibilities = ["FARGATE"]
   cpu                      = 256
   memory                   = 512
   network_mode             = "awsvpc"
-  container_definitions = module.container_definition.json_map_encoded_list
+  container_definitions = module.container_definition[count.index].json_map_encoded_list
 }
 
 module "container_definition" {
   source = "cloudposse/ecs-container-definition/aws"
 
-  container_name  = random_pet.service.id
-  container_image = "alpine/bombardier"
-  command = ["-c", "1500", "-d", "300s", "-l", var.target]
+  count = length(toset(var.target))
+
+  container_name  = random_pet.service[count.index].id
+  container_image = "atabachuk/hulk"
+  command = ["-site", var.target[count.index]]
 }
